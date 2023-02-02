@@ -20,12 +20,9 @@
         $_SESSION['error'] = 'รหัสผ่านต้องมีความยาวระหว่าง 5 ถึง 20 ตัวอักษร';
         header("location: ../page/signin.php");
     } else{
-        try{
-            $check_user = $conn->prepare("SELECT * FROM users WHERE email = :email");
-            $check_user->bindParam(":email", $email);
-            $check_user->execute();
-            $row = $check_user->fetch(PDO::FETCH_ASSOC);
-
+            // function checkUserLogin-------------------------------------------
+            $row = $controller->checkUserLogin($email);
+            //--------------------------------------------------------------------
             if($check_user->rowCount() > 0){
                 if($row['email'] == $email){
                     if(password_verify($password, $row['password'])){
@@ -51,17 +48,8 @@
             else {
                 $_SESSION['error'] = "ไม่มีข้อมูลมึงในระบบจ้า";
                 header("location: ../page/signin.php");
-            }
-            
-        } catch(PDOException $e) {
-            echo $e->getMessage();
-        }
-        
+            }   
     }
-   
-
-
-
    }
 
 ?>

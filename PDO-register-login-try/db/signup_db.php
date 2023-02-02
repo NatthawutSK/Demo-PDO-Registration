@@ -37,41 +37,22 @@
         $_SESSION['error'] = 'รหัสไม่ตรงกันโว้ย ความจำสั้นหรอ ?';
         header("location: ../index.php");
     } else{
-        try{
-            $check_email = $conn->prepare("SELECT email FROM users WHERE email = :email");
-            $check_email->bindParam(":email", $email);
-            $check_email->execute();
-            $row = $check_email->fetch(PDO::FETCH_ASSOC);
-
+            // function checkEmail-----------------------------------------------------------
+            $row = $controller->checkEmail($email);
+           //  ------------------------------------------------------------------------------
             if($row['email'] == $email){
                 $_SESSION['warning'] = 'มีอีเมลนี้ในระบบล้าวว <a href="page/signin.php" class="alert-link">เข้าสู่ระบบ</a>';
                 header("location: ../index.php");
             } else if(!isset($_SESSION['error'])){
-                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("INSERT INTO users(firstname, lastname, email, password, role)
-                                        VALUES (:firstname, :lastname, :email, :password, :role)");
-                $stmt->bindParam(":firstname", $firstname);
-                $stmt->bindParam(":lastname", $lastname);
-                $stmt->bindParam(":email", $email);
-                $stmt->bindParam(":password", $passwordHash);
-                $stmt->bindParam(":role", $role);
-                $stmt->execute();
+                // function insertUser--------------------------------------------------------------
+                $controller->insertUser($firstname,$lastname,$email,$password,$role);
+                // -----------------------------------------------------------------------------------
                 $_SESSION['success'] = "สมัครสมาชิกเรียบร้อย <a href='page/signin.php' class='alert-link'>เข้าสู่ระบบ</a>";
                 header('location: ../index.php');
             } else{
                 $_SESSION['error'] = "มีบางอย่างผิดพลาด";
                 header('location: ../index.php');
             }
-
-        } catch(PDOException $e) {
-            echo $e->getMessage();
-        }
-        
     }
-   
-
-
 
    }
-
-?>
