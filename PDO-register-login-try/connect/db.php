@@ -14,6 +14,6 @@
      echo "Connection failed: " . $e->getMessage();
    }
 
-   require_once 'connect/controller.php';
+   require_once 'controller.php';
    $controller = new Controller($conn);
 ?>

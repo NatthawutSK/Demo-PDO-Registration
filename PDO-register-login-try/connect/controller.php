@@ -44,8 +44,8 @@ class Controller
             $check_user = $this->db->prepare("SELECT * FROM users WHERE email = :email");
             $check_user->bindParam(":email", $email);
             $check_user->execute();
-            $row = $check_user->fetch(PDO::FETCH_ASSOC);
-            return $row;
+            // $row = $check_user->fetch(PDO::FETCH_ASSOC);
+            return $check_user;
         }catch (PDOException $e) {
             $e->getMessage();
             return false;

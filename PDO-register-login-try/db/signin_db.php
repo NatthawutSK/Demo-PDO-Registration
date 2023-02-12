@@ -21,7 +21,8 @@
         header("location: ../page/signin.php");
     } else{
             // function checkUserLogin-------------------------------------------
-            $row = $controller->checkUserLogin($email);
+            $check_user = $controller->checkUserLogin($email);
+            $row = $check_user->fetch(PDO::FETCH_ASSOC);
             //--------------------------------------------------------------------
             if($check_user->rowCount() > 0){
                 if($row['email'] == $email){
